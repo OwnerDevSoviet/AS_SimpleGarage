@@ -4,7 +4,7 @@ NoPixel based garage for ESX
 *** Notifications and such are translated into Dutch ***
 
 #Requirements
-- ESX
+- ESX (V1 and below)
 - Mythic Notify ( https://github.com/wowpanda/mythic_notify )
 - Mythic Progbar ( https://github.com/ONyambura/mythic_progbar )
 
