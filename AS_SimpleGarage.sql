@@ -11,6 +11,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+USE es_extended;
 
 -- Structuur van  tabel fivem.owned_vehicles wordt geschreven
 CREATE TABLE IF NOT EXISTS `owned_vehicles` (
