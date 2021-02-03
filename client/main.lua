@@ -47,17 +47,17 @@ function LockVehicle()
 					if islocked == false then
 						SetVehicleDoorsLocked(playerVeh, 2)
 						TriggerServerEvent("AS_SimpleGarage:changeLockStatus", vehicleProps.plate)
-						exports['mythic_notify']:SendAlert('inform', 'Voertuig dicht', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+						exports['mythic_notify']:SendAlert('inform', 'Vehicle closed', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 						PlayVehicleDoorOpenSound(playerVeh, 0)
 					elseif islocked == true then
 						SetVehicleDoorsLocked(playerVeh, 1)
 						TriggerServerEvent("AS_SimpleGarage:changeLockStatus", vehicleProps.plate)
-						exports['mythic_notify']:SendAlert('inform', 'Voertuig open', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+						exports['mythic_notify']:SendAlert('inform', 'Vehicle open', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 						PlayVehicleDoorOpenSound(playerVeh, 0)
 					end
 				end, vehicleProps.plate)
 			else
-				exports['mythic_notify']:SendAlert('inform', 'U heeft hier geen sleutels voor', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+				exports['mythic_notify']:SendAlert('inform', 'You have no keys for this', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 			end
 		end, vehicleProps.plate)
 	end
@@ -84,7 +84,7 @@ function LockVehicle()
 						Citizen.Wait(400)
 						SetVehicleDoorsLocked(ClosestVeh, 2)
 						TriggerServerEvent("AS_SimpleGarage:changeLockStatus", vehicleProps.plate)
-						exports['mythic_notify']:SendAlert('inform', 'Voertuig dicht', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+						exports['mythic_notify']:SendAlert('inform', 'Vehicle closed', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 						SetVehicleLights(ClosestVeh, 2)
 						PlayVehicleDoorOpenSound(ClosestVeh, 0)
 						Citizen.Wait(400)
@@ -114,7 +114,7 @@ function LockVehicle()
 						Citizen.Wait(400)
 						SetVehicleDoorsLocked(ClosestVeh, 1)
 						TriggerServerEvent("AS_SimpleGarage:changeLockStatus", vehicleProps.plate)
-						exports['mythic_notify']:SendAlert('inform', 'Voertuig open', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+						exports['mythic_notify']:SendAlert('inform', 'Vehicle open', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 						SetVehicleLights(ClosestVeh, 2)
 						PlayVehicleDoorOpenSound(ClosestVeh, 0)
 						Citizen.Wait(400)
@@ -328,7 +328,7 @@ function SpawnLocalVehicle(data)
 	end
 	
 	if not ESX.Game.IsSpawnPointClear(spawnpoint["position"], 3.0) then 
-		exports['mythic_notify']:SendAlert('inform', 'Er staat iets in de weg', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+		exports['mythic_notify']:SendAlert('inform', 'Somethings in the way', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 		return
 	end
 	
@@ -359,7 +359,7 @@ function SpawnVehicle(data)
 	end
 	
 	if not ESX.Game.IsSpawnPointClear(spawnpoint["position"], 3.0) then 
-		exports['mythic_notify']:SendAlert('inform', 'Er staat iets in de weg', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+		exports['mythic_notify']:SendAlert('inform', 'Somethings in the way', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 		return
 	end
 	CloseMenu()
@@ -370,7 +370,7 @@ function SpawnVehicle(data)
 
         if DoesEntityExist(vehicle) then
 			if Config.Trim(GetVehicleNumberPlateText(vehicle)) == Config.Trim(vehicleProps["plate"]) then
-				exports['mythic_notify']:SendAlert('inform', 'Voertuig is al uit de garage', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+				exports['mythic_notify']:SendAlert('inform', 'Vehicle is already out of the garage', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 				return HandleCamera(cachedData["currentGarage"])
 			end
 		end
@@ -396,9 +396,9 @@ end
 function IsVehicleRegistered(plate)
 	ESX.TriggerServerCallback('AS_SimpleGarage:checkRegistered', function(isregistered)
 		if isregistered == true then
-			exports['mythic_notify']:SendAlert('inform', _U('Vehicle_Registered'), 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+			exports['mythic_notify']:SendAlert('inform', _U('Vehicle is registered to you'), 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 		elseif isregistered == false then
-			exports['mythic_notify']:SendAlert('inform', _U('Vehicle_notRegistered'), 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+			exports['mythic_notify']:SendAlert('inform', _U('Vehicle isnt registered to you'), 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 		end
 	end, plate)
 end
@@ -438,13 +438,13 @@ function SaveVehicle()
 						NetworkFadeOutEntity(vehicle, true, true)	
 						Citizen.Wait(100)	
 						ESX.Game.DeleteVehicle(vehicle)
-						exports['mythic_notify']:SendAlert('inform', 'Voertuig opgeslagen', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+						exports['mythic_notify']:SendAlert('inform', 'Vehicle saved', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 					else
-						exports['mythic_notify']:SendAlert('inform', 'U bent niet de eigenaar', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+						exports['mythic_notify']:SendAlert('inform', 'You are not the owner', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 					end
 				end, vehicleProps, cachedData["currentGarage"])
 			else
-				exports['mythic_notify']:SendAlert('inform', 'U heeft hier geen sleutels voor', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+				exports['mythic_notify']:SendAlert('inform', 'You have no keys for this', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 			end
 		end, vehicleProps.plate)
 	end
@@ -474,7 +474,7 @@ function OpenPublicGarageMenu()
 					vehicleLabel = name
 				end
 				local vehicle = vehicleProps
-				Menu.addButton("" ..(vehicle["plate"]).." | "..vehicleLabel, "SpawnVehicle", {vehicle}, "", " Motor : " .. round(vehicle["engineHealth"]) /10 .. "%", " Brandstof : " .. round(vehicle["fuelLevel"]) .. "%","SpawnLocalVehicle")
+				Menu.addButton("" ..(vehicle["plate"]).." | "..vehicleLabel, "SpawnVehicle", {vehicle}, "", " Motor : " .. round(vehicle["engineHealth"]) /10 .. "%", " Fuel : " .. round(vehicle["fuelLevel"]) .. "%","SpawnLocalVehicle")
 			end
 		end
 	end, currentGarage)
@@ -534,7 +534,7 @@ function WaitForModel(model)
     end
 
     if not IsModelValid(model) then
-		return exports['mythic_notify']:SendAlert('inform', 'Dit model bestaat niet meer - Maak een ticket op Discord', 10000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+		return exports['mythic_notify']:SendAlert('inform', 'This model no longer exists - Create a ticket on Discord with photos and description', 10000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
     end
 
 	if not HasModelLoaded(model) then
