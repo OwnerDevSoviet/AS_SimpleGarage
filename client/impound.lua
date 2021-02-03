@@ -6,17 +6,17 @@ Citizen.CreateThread(function()
 	SetBlipColour(blip, 5)
 	SetBlipAsShortRange(blip, true)
 	BeginTextCommandSetBlipName("STRING")
-	AddTextComponentString("In beslagname opslag")
+	AddTextComponentString("Impound")
 	EndTextCommandSetBlipName(blip)
 	while true do
 		Citizen.Wait(5)
 		local pedcoords = GetEntityCoords(GetPlayerPed(-1))
 		if(GetDistanceBetweenCoords(pedcoords, Config.Impound.RetrieveLocation.x, Config.Impound.RetrieveLocation.y, Config.Impound.RetrieveLocation.z, true) < 40.0) then
 			DrawMarker(23, Config.Impound.RetrieveLocation.x, Config.Impound.RetrieveLocation.y, Config.Impound.RetrieveLocation.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 1.5, 1.0, Config.ColorR, Config.ColorG, Config.ColorB, 255, false, true, 2, false, false, false)
-			Draw3DText(Config.Impound.RetrieveLocation.x, Config.Impound.RetrieveLocation.y, Config.Impound.RetrieveLocation.z -1.000, "Druk E voor jouw in beslag genomen voertuigen", 4, 0.1, 0.1)
+			Draw3DText(Config.Impound.RetrieveLocation.x, Config.Impound.RetrieveLocation.y, Config.Impound.RetrieveLocation.z -1.000, "Press E for your impounded vehicles", 4, 0.1, 0.1)
 			if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job and ESX.PlayerData.job.name == 'mechanic' then
 				DrawMarker(23, Config.Impound.StoreLocation.x, Config.Impound.StoreLocation.y, Config.Impound.StoreLocation.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, 5.0, 1.0, Config.ColorR, Config.ColorG, Config.ColorB, 255, false, true, 2, true, false, false, false)
-				Draw3DText(Config.Impound.StoreLocation.x, Config.Impound.StoreLocation.y, Config.Impound.StoreLocation.z -1.000, "Druk E om het voertuig in beslag te nemen", 4, 0.1, 0.1)
+				Draw3DText(Config.Impound.StoreLocation.x, Config.Impound.StoreLocation.y, Config.Impound.StoreLocation.z -1.000, "Press E to impound the vehicle", 4, 0.1, 0.1)
 				if(GetDistanceBetweenCoords(pedcoords, Config.Impound.StoreLocation.x, Config.Impound.StoreLocation.y, Config.Impound.StoreLocation.z, true) < 7.0) then
 					if IsControlJustPressed(0, 38) then
 						ImpoundVoertuig()
@@ -55,9 +55,9 @@ function ImpoundVoertuig()
 					NetworkFadeOutEntity(vehicle, true, true)	
 					Citizen.Wait(100)	
 					ESX.Game.DeleteVehicle(vehicle)
-					exports['mythic_notify']:SendAlert('inform', 'Voertuig in beslag genomen', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+					exports['mythic_notify']:SendAlert('inform', 'Vehicle impounded', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 				elseif isPlateTaken == true then -- Vehicle has owner
-					KeyboardInput("Voer het boetebedrag in tussen €250 en €2500", "", 4)
+					KeyboardInput("Enter the fine amount between $ 250 and $ 2500", "", 4)
 					local price = tonumber(GetOnscreenKeyboardResult())
 					if price ~= nil then
 						if price < 2501 and price > 249 then
@@ -68,12 +68,12 @@ function ImpoundVoertuig()
 							TriggerServerEvent('AS_SimpleGarage:ImpoundVoertuig', plate, vehicleProps, price)
 							Citizen.Wait(100)	
 							ESX.Game.DeleteVehicle(vehicle)
-							exports['mythic_notify']:SendAlert('inform', 'Voertuig in beslag genomen met een boetebedrag van: €'..price, 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+							exports['mythic_notify']:SendAlert('inform', 'Vehicle seized with a fine of: $'..price, 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 						else
-							exports['mythic_notify']:SendAlert('inform', 'Boetebedrag is onjuist, probeer opnieuw', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+							exports['mythic_notify']:SendAlert('inform', 'Fine amount is incorrect, please try again', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 						end
 					else
-						exports['mythic_notify']:SendAlert('inform', 'Boetebedrag niet ingevuld', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+						exports['mythic_notify']:SendAlert('inform', 'Fine amount not entered', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 					end
 				end
 			end, plate)
@@ -113,7 +113,7 @@ function StartImpoundAnimatie()
 	TriggerEvent("mythic_progbar:client:progress", {
         name = "ImpoundVoertuig",
         duration = 10000,
-        label = "Voertuig in beslag nemen...",
+        label = "Impound vehicle ...",
         useWhileDead = false,
         canCancel = true,
         controlDisables = {
@@ -152,7 +152,7 @@ function ImpoundedVoertuigenMenu()
 	ClearMenu()
 	Citizen.Wait(5)
 	MenuTitle = "Impound"
-	Menu.addButton("IN BESLAG GENOMEN VOERTUIGEN","CloseMenu",nil)
+	Menu.addButton("Vehicle Confiscated","CloseMenu",nil)
 
 	ESX.TriggerServerCallback("AS_SimpleGarage:checkImpounded", function(fetchedVehicles)
 		for k, v in ipairs(fetchedVehicles) do
@@ -167,7 +167,7 @@ function ImpoundedVoertuigenMenu()
 				end
 				local vehicle = vehicleProps
 				local impoundprice = v["impoundprice"]
-				Menu.addButton("" ..(vehicle["plate"]).." | "..vehicleLabel, "SpawnImpoundedVehicle", v, "", " Openstaande schuld: €" ..impoundprice.. "", "",nil)
+				Menu.addButton("" ..(vehicle["plate"]).." | "..vehicleLabel, "SpawnImpoundedVehicle", v, "", " Outstanding debt: $" ..impoundprice.. "", "",nil)
 			end
 		end
 	end)
@@ -188,7 +188,7 @@ function SpawnImpoundedVehicle(v)
 	end
 	
 	if not ESX.Game.IsSpawnPointClear(spawnpoint, 3.0) then 
-		exports['mythic_notify']:SendAlert('inform', 'Er staat iets in de weg', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+		exports['mythic_notify']:SendAlert('inform', 'Somethings in the way', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 		return
 	end
 	CloseMenu()
@@ -199,7 +199,7 @@ function SpawnImpoundedVehicle(v)
 
         if DoesEntityExist(vehicle) then
 			if Config.Trim(GetVehicleNumberPlateText(vehicle)) == Config.Trim(vehicleProps["plate"]) then
-				exports['mythic_notify']:SendAlert('inform', 'Voertuig is al in de wereld', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+				exports['mythic_notify']:SendAlert('inform', 'Vehicle is out already', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 			end
 		end
 	end
@@ -221,7 +221,7 @@ function SpawnImpoundedVehicle(v)
 				ClearMenu()
 			end)
 		elseif EnoughMoney == false then -- Owner has no money
-			exports['mythic_notify']:SendAlert('inform', 'Er staat niet genoeg op je bankrekening', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
+			exports['mythic_notify']:SendAlert('inform', 'There is not enough in your bank account', 5000, { ['background-color'] = Config.ColorHex, ['color'] = '#ffffff' })
 		end
 	end, v["impoundprice"])
 end
