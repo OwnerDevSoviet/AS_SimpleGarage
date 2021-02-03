@@ -29,7 +29,8 @@ end)
 
 ESX.RegisterServerCallback('AS_SimpleGarage:checkMoney', function(source, cb, price)
 	local xPlayer = ESX.GetPlayerFromId(source)
-	if xPlayer.get('bank') >= price then
+	local bank = xPlayer.getAccount('bank').money
+	if bank >= price then
 		xPlayer.removeAccountMoney('bank', price)
 		cb(true)
 	else
